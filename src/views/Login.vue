@@ -23,9 +23,12 @@
                         <c-text fontSize="14px" mb="2">Password</c-text>
                         <c-input type="password" v-model="form.password" required placeholder="Enter Password" fontSize="14px" py="6" borderStyle="solid" borderWidth="1px" borderColor="green.100" boxShadow="none" />
                     </c-box>
-                    <c-button @click="login" w="100%" bg="green.300" border="none" my="2" py="6">
-                        LOGIN
-                    </c-button>
+                    <c-flex align-items="center">
+                        <c-button @click="login" w="100%" bg="green.300" border="none" my="2" py="6">
+                            LOGIN
+                        </c-button>
+                        <c-circular-progress v-show="loading" color="green.300" is-indeterminate/>
+                    </c-flex>
 
                     <c-text textAlign="center" mt="4">Dont have an account? <c-button py="0" px="0" textDecoration="none" bg="none" as="router-link" to="/register" color="green.300" fontWeight="bold">Register Here</c-button></c-text>
                     <c-text color="gray.300" textAlign="center" my="5" px="4" lineHeight="1">By clicking on Login, you agree to our <c-text as="span" color="green.300">Terms & Conditions and Privacy Policy</c-text></c-text>
@@ -36,11 +39,11 @@
 </template>
 
 <script>
-import { CFlex,CButton,CBox,CStack,CInput,CText,CFormLabel } from "@chakra-ui/vue";
+import { CFlex,CButton,CBox,CStack,CInput,CText,CFormLabel,CCircularProgress } from "@chakra-ui/vue";
 
 export default {
     components:{
-        CFlex,CButton,CBox,CStack,CInput,CText,CFormLabel
+        CFlex,CButton,CBox,CStack,CInput,CText,CFormLabel,CCircularProgress
     },
     data(){
         return{
@@ -53,6 +56,15 @@ export default {
     },
     methods:{
         login(){
+            if(!this.form.email && !this.form.password) {
+                this.$toast({
+                    title: 'Error.',
+                    description: "Ensure all fields are filled.",
+                    status: 'error',
+                    duration: 1000
+                })
+                return ;
+            }
             try{
                 this.loading = true;
                 this.$store.dispatch('login', this.form);
@@ -68,6 +80,7 @@ export default {
                 },2000)
             } catch (err) {
                 console.log(err.response)
+                this.loading = false;
                 this.$toast({
                     title: 'Error.',
                     description: "Please check your credentials.",

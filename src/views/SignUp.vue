@@ -73,6 +73,15 @@ export default {
     },
     methods:{
         async registerUser(){
+            if(!this.form.email && !this.form.password && !this.form.password_confirmation && !this.form.firstname && !this.form.lastname) {
+                this.$toast({
+                    title: 'Error.',
+                    description: "Ensure all fields are filled.",
+                    status: 'error',
+                    duration: 1000
+                })
+                return ;
+            }
             try{
                 this.loading = true;
                 await this.$store.dispatch('register', this.form);
@@ -91,6 +100,7 @@ export default {
                     status: 'error',
                     duration: 1000
                 })
+                this.loading = false;
             }
         }
     }
