@@ -36,9 +36,12 @@
                         <c-text fontSize="14px" mb="2">Confirm Password</c-text>
                         <c-input type="password" v-model="form.password_confirmation" placeholder="Confirm Password" fontSize="14px" py="6" size="md" borderStyle="solid" borderWidth="1px" borderColor="green.100" boxShadow="none" />
                     </c-box>
-                    <c-button @click="registerUser" w="100%" bg="green.300" border="none" my="2" py="6">
-                        SIGN UP
-                    </c-button>
+                    <c-flex align-items="center">
+                        <c-button @click="registerUser" w="100%" bg="green.300" border="none" my="2" py="6">
+                            SIGN UP
+                        </c-button>
+                        <c-circular-progress v-show="loading" color="green.300" is-indeterminate/>
+                    </c-flex>
 
                     <c-text textAlign="center" mt="4">Already have an account? <c-button textDecoration="none" bg="none" as="router-link" to="/login" color="green.300" fontWeight="bold">Login Here</c-button></c-text>
                 </c-box>
@@ -50,14 +53,15 @@
 </template>
 
 <script>
-import { CFlex,CButton,CBox,CStack,CInput,CText,CFormLabel } from "@chakra-ui/vue";
+import { CFlex,CButton,CBox,CStack,CInput,CText,CFormLabel,CCircularProgress} from "@chakra-ui/vue";
 
 export default {
     components:{
-        CFlex,CButton,CBox,CStack,CInput,CText,CFormLabel
+        CFlex,CButton,CBox,CStack,CInput,CText,CFormLabel,CCircularProgress
     },
     data(){
         return{
+            loading:false,
             form:{
                 firstname: '',
                 lastname: '',
@@ -69,8 +73,24 @@ export default {
     },
     methods:{
         async registerUser(){
-            const res = await this.$store.dispatch('register', this.form);
-            console.log('register',res)
+            try{
+                this.loading = true;
+                await this.$store.dispatch('register', this.form);
+                this.$toast({
+                    title: 'Account created successfully.',
+                    description: "We've created your account for you. You can proceed to login",
+                    status: 'success',
+                    duration: 10000
+                })
+                this.loading = false;
+            } catch (err) {
+                this.$toast({
+                    title: 'Error.',
+                    description: "We could not create an account.",
+                    status: 'error',
+                    duration: 10000
+                })
+            }
         }
     }
 }
