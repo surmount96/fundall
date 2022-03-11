@@ -16,14 +16,14 @@
                     </c-box>
                     <c-box mb="8">
                         <c-text fontSize="14px" mb="2">Email or Username</c-text>
-                        <c-input placeholder="Enter Email" fontSize="14px" py="6" borderStyle="solid" borderWidth="1px" borderColor="green.100" boxShadow="none" />
+                        <c-input type="email" v-model="form.email" required placeholder="Enter Email" fontSize="14px" py="6" borderStyle="solid" borderWidth="1px" borderColor="green.100" boxShadow="none" />
                     </c-box>
                     
                     <c-box mb="4">
                         <c-text fontSize="14px" mb="2">Password</c-text>
-                        <c-input placeholder="Enter Password" fontSize="14px" py="6" borderStyle="solid" borderWidth="1px" borderColor="green.100" boxShadow="none" />
+                        <c-input type="password" v-model="form.password" required placeholder="Enter Password" fontSize="14px" py="6" borderStyle="solid" borderWidth="1px" borderColor="green.100" boxShadow="none" />
                     </c-box>
-                    <c-button w="100%" bg="green.300" border="none" my="2" py="6">
+                    <c-button @click="login" w="100%" bg="green.300" border="none" my="2" py="6">
                         LOGIN
                     </c-button>
 
@@ -44,8 +44,38 @@ export default {
     },
     data(){
         return{
-            //
+            loading:false,
+            form:{
+                email:'',
+                password:''
+            }
         };
+    },
+    methods:{
+        login(){
+            try{
+                this.loading = true;
+                this.$store.dispatch('login', this.form);
+                this.$toast({
+                    title: 'Successfully login.',
+                    description: "Redirecting to dashboard",
+                    status: 'success',
+                    duration: 1000
+                })
+                setTimeout(() => {
+                    this.$router.push('/dashboard');
+                    this.loading = false;
+                },2000)
+            } catch (err) {
+                console.log(err.response)
+                this.$toast({
+                    title: 'Error.',
+                    description: "Please check your credentials.",
+                    status: 'error',
+                    duration: 1000
+                })
+            }
+        }
     }
 }
 </script>

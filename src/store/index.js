@@ -14,9 +14,11 @@ export default new Vuex.Store({
     STATUS(state,data) {
       state.status = data
     },
-    users(state, data) {
-      state.user = data.user;
-      state.token = data.token;
+    SAVE_USER(state, data) {
+      state.user = data;
+      state.token = data.access_token;
+
+      localStorage.setItem("FA_token", JSON.stringify(data.access_token));
     },
   },
   actions: {
@@ -25,7 +27,24 @@ export default new Vuex.Store({
       console.log(res)
       if (res.status === 201) {
         console.log(res)
-         commit(res.data.success.status)
+         commit('STATUS',res.data.success.status)
+        // localStorage.setItem("FA_token", JSON.stringify(res));
+        // commit("users", res);
+        return true;
+      }
+    },
+    async login({ commit }, credentials) {
+      const res = await apiService.login(credentials);
+      console.log(res.data)
+  
+      commit('SAVE_USER',res.data.success.user);
+
+    },
+    async fetchUser({ commit }, credentials) {
+      const res = await apiService.user();
+      console.log(res)
+      if (res.status === 201) {
+        console.log(res)
         // localStorage.setItem("FA_token", JSON.stringify(res));
         // commit("users", res);
         return true;

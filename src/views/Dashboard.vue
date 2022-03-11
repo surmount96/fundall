@@ -8,13 +8,13 @@
                         <img src="../assets/user.svg" alt="user" width="20px"/>
                     </c-box>
                     <c-box ml="4">
-                        <c-text>Babatunde Fashola</c-text>
+                        <c-text>{{ $store.state.user.firstname }} {{ $store.state.user.lastname }}</c-text>
                         <c-text>baba2@gmail.com</c-text>
                     </c-box>
                 </c-flex>
                 <c-text fontSize="21px" mb="1">Target Monthly Expenses</c-text>
-                <c-text fontSize="28px" mb="4" fontWeight="bold"> ₦ 596,000</c-text>
-                <c-box bg="#EFEFEF" h="7px" mb="8"><c-box bg="green.300" h="100%" w="40%"></c-box></c-box>
+                <c-text fontSize="28px" mb="4" fontWeight="bold"> ₦ {{ $store.state.user.monthly_target }}</c-text>
+                <c-box bg="#EFEFEF" h="7px" mb="8"><c-box bg="green.300" h="100%" w="0%"></c-box></c-box>
                 <c-box bg="#fff" p="3" boxShadow="sm">
                     <c-text fontSize="14px">Daily Expenses Summary</c-text>
                     <c-flex mt="4" mb="8" align-items="center">
@@ -49,7 +49,7 @@
                 <c-box bg="#F2F3F7" p="4" borderWidth="1px" borderStyle="solid" borderColor="#f1f1f1" px="8" py="10" h="100%">
                     <c-flex bg="#fff" h="15vh" p="3" mb="3" align-items="center" justifyContent="space-between">
                         <c-box>
-                            <c-text fontSize="22px" fontWeight="800" mb="2"><c-text as="span" color="green.300">Welcome back,</c-text> Babatunde</c-text>
+                            <c-text fontSize="22px" fontWeight="800" mb="2"><c-text as="span" color="green.300">Welcome back,</c-text> {{ $store.state.user.firstname }}</c-text>
                             <c-text fontSize="15px">Now, let’s get your expenses for this month</c-text>
                         </c-box>
                         <c-box>
@@ -67,7 +67,7 @@
                     
                     <c-box mb="4" w="70%">
                         <c-text fontSize="14px" mb="2">Date</c-text>
-                        <c-input placeholder="Enter Password" fontSize="14px" py="6" borderStyle="solid" borderWidth="1px" borderColor="green.100" boxShadow="none" />
+                        <c-input placeholder="Enter date" fontSize="14px" py="6" borderStyle="solid" borderWidth="1px" borderColor="green.100" boxShadow="none" />
                     </c-box>
                     <c-text fontSize="14px" mb="1">Today's Expense</c-text>
                     <c-flex justifyContent="space-between" mb="4">

@@ -80,15 +80,16 @@ export default {
                     title: 'Account created successfully.',
                     description: "We've created your account for you. You can proceed to login",
                     status: 'success',
-                    duration: 10000
+                    duration: 1000
                 })
+                this.$router.push('/login');
                 this.loading = false;
             } catch (err) {
                 this.$toast({
                     title: 'Error.',
                     description: "We could not create an account.",
                     status: 'error',
-                    duration: 10000
+                    duration: 1000
                 })
             }
         }
